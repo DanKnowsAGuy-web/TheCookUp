@@ -71,9 +71,19 @@
     0%, 100% { transform: translateY(0px); }
     50%       { transform: translateY(-6px); }
   }
-  @keyframes waxSpin {
-    from { transform: rotate(-4deg) scale(0.85); opacity: 0; }
-    to   { transform: rotate(-4deg) scale(1);    opacity: 1; }
+  @keyframes waxImpression {
+    0%   { transform: rotate(0deg)   scale(0.7);  opacity: 0;    filter: blur(3px); }
+    40%  { transform: rotate(-6deg)  scale(1.05); opacity: 0.9;  filter: blur(0px); }
+    65%  { transform: rotate(-8deg)  scale(0.92); opacity: 1;    filter: blur(0px); }
+    80%  { transform: rotate(-7deg)  scale(0.96); opacity: 1;    filter: blur(0px); }
+    100% { transform: rotate(-6deg)  scale(1);    opacity: 1;    filter: blur(0px); }
+  }
+  @keyframes acornPress {
+    0%   { transform: scale(1)    rotate(0deg);   opacity: 0.55; }
+    40%  { transform: scale(1.18) rotate(-8deg);  opacity: 0.8;  }
+    70%  { transform: scale(0.88) rotate(-12deg); opacity: 0.9;  }
+    85%  { transform: scale(0.95) rotate(-10deg); opacity: 0.85; }
+    100% { transform: scale(0.9)  rotate(-10deg); opacity: 0.75; }
   }
   @keyframes shimmerPass {
     0%   { background-position: -200% center; }
@@ -437,7 +447,7 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-    padding: 72px 0;
+    padding: 44px 0;
     position: relative;
   }
   .ornament-line {
@@ -455,10 +465,14 @@
     align-items: center;
     gap: 8px;
   }
-  /* inline botanical SVG between ornament dots */
-  .ornament-leaf {
-    width: 28px;
-    opacity: 0.55;
+  .ornament-acorn {
+    width: 32px;
+    height: 32px;
+    display: block;
+    transform-origin: center bottom;
+  }
+  .ornament-acorn.visible {
+    animation: acornPress 0.7s ease forwards;
   }
 
   /* ============================================================
@@ -849,11 +863,9 @@
     position: relative;
   }
 
-  /* ============================================================
-     CTA SECTION with WAX SEAL
-  ============================================================ */
+  /* CTA SECTION with WAX SEAL */
   .cta-section {
-    padding: 120px 0;
+    padding: 60px 0 120px;
     background: linear-gradient(to bottom, var(--forest-warm) 0%, var(--forest) 100%);
     text-align: center;
     position: relative;
@@ -873,12 +885,18 @@
   /* WAX SEAL */
   .wax-seal {
     display: inline-block;
-    margin-bottom: 32px;
-    animation: waxSpin 1s 0.3s ease forwards;
+    margin-bottom: 28px;
     opacity: 0;
-    transform: rotate(-4deg);
+    transform: rotate(0deg) scale(0.7);
+    filter: blur(3px);
   }
-  .wax-seal svg { width: 90px; height: 90px; }
+  .wax-seal.visible {
+    animation: waxImpression 1.1s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .wax-seal svg {
+    width: 96px; height: 96px;
+    filter: drop-shadow(0 4px 18px rgba(107,32,48,0.55)) drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+  }
 
   .cta-details {
     display: flex;
@@ -967,7 +985,28 @@
 
 <!-- REUSABLE BOTANICAL SVG DEFS (inline, hidden) -->
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="oak-leaf" viewBox="0 0 20 22">
+  <symbol id="acorn" viewBox="0 0 40 52">
+    <!-- cap -->
+    <ellipse cx="20" cy="16" rx="14" ry="7" fill="#8b6914" opacity="0.85"/>
+    <ellipse cx="20" cy="13" rx="14" ry="7" fill="#a07820" opacity="0.9"/>
+    <!-- cap texture hatching -->
+    <line x1="8"  y1="11" x2="9"  y2="19" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    <line x1="12" y1="9"  x2="13" y2="19" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    <line x1="16" y1="8"  x2="17" y2="19" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    <line x1="20" y1="7"  x2="20" y2="19" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    <line x1="24" y1="8"  x2="23" y2="19" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    <line x1="28" y1="9"  x2="27" y2="19" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    <line x1="32" y1="11" x2="31" y2="19" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    <!-- stem -->
+    <line x1="20" y1="7" x2="20" y2="2" stroke="#8b6914" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- nut body -->
+    <ellipse cx="20" cy="36" rx="11" ry="14" fill="#c9a84c" opacity="0.82"/>
+    <ellipse cx="20" cy="34" rx="11" ry="13" fill="#dfc070" opacity="0.7"/>
+    <!-- nut highlight -->
+    <ellipse cx="16" cy="30" rx="3" ry="5" fill="white" opacity="0.08"/>
+    <!-- nut tip -->
+    <ellipse cx="20" cy="49" rx="3.5" ry="2.5" fill="#a07820" opacity="0.7"/>
+  </symbol>
     <path d="M10 2C6 5 2 9 3 14C4 18 7 20 10 20C13 20 16 18 17 14C18 9 14 5 10 2Z" fill="#c9a84c" opacity="0.75"/>
     <line x1="10" y1="2" x2="10" y2="20" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
     <line x1="10" y1="8"  x2="5"  y2="12" stroke="#c9a84c" stroke-width="0.5" opacity="0.35"/>
@@ -1086,9 +1125,7 @@
 <div class="ornament-divider">
   <div class="ornament-line reveal"></div>
   <div class="ornament-center">
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;"><use href="#oak-leaf"/></svg>
-    <span style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);opacity:0.5;margin:0 10px;">✦</span>
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;transform:scaleX(-1)"><use href="#oak-leaf"/></svg>
+    <svg class="ornament-acorn reveal" viewBox="0 0 40 52"><use href="#acorn"/></svg>
   </div>
   <div class="ornament-line reveal"></div>
 </div>
@@ -1138,9 +1175,7 @@
 <div class="ornament-divider">
   <div class="ornament-line reveal"></div>
   <div class="ornament-center">
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;"><use href="#oak-leaf"/></svg>
-    <span style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);opacity:0.5;margin:0 10px;">✦</span>
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;transform:scaleX(-1)"><use href="#oak-leaf"/></svg>
+    <svg class="ornament-acorn reveal" viewBox="0 0 40 52"><use href="#acorn"/></svg>
   </div>
   <div class="ornament-line reveal"></div>
 </div>
@@ -1197,9 +1232,7 @@
 <div class="ornament-divider">
   <div class="ornament-line reveal"></div>
   <div class="ornament-center">
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;"><use href="#oak-leaf"/></svg>
-    <span style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);opacity:0.5;margin:0 10px;">✦</span>
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;transform:scaleX(-1)"><use href="#oak-leaf"/></svg>
+    <svg class="ornament-acorn reveal" viewBox="0 0 40 52"><use href="#acorn"/></svg>
   </div>
   <div class="ornament-line reveal"></div>
 </div>
@@ -1233,7 +1266,7 @@
             <svg class="payoff-leaf" viewBox="0 0 20 22"><use href="#oak-leaf"/></svg>
             <div class="payoff-text">
               <strong>Money back in your pocket.</strong>
-              <span>Forty meals a month via takeout runs around $600 at $15 a meal. The cook-up brings that same forty meals down to $400. The food is better. The math is simple.</span>
+              <span>Restaurant meals and delivery with tip run $20 or more. Fast casual averages $15. The cook-up brings forty meals a month down to $400. That is $200 to $400 back in your pocket every single month.</span>
             </div>
           </li>
           <li class="reveal reveal-delay-4">
@@ -1248,23 +1281,30 @@
       <div class="payoff-aside reveal reveal-delay-3">
         <div class="payoff-aside-title">The Math</div>
         <div class="comparison-row">
-          <div class="comparison-label">40 meals/mo via takeout (avg $15/meal)</div>
+          <div class="comparison-label">40 meals/mo — restaurant or delivery (avg $20)</div>
           <div class="comparison-bar-wrap">
             <div class="comparison-bar"><div class="comparison-fill fill-red" style="width:100%"></div></div>
+            <span class="comparison-val red">$800</span>
+          </div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-label">40 meals/mo — fast casual (avg $15)</div>
+          <div class="comparison-bar-wrap">
+            <div class="comparison-bar"><div class="comparison-fill fill-red" style="width:75%"></div></div>
             <span class="comparison-val red">$600</span>
           </div>
         </div>
         <div class="comparison-row">
-          <div class="comparison-label">40 meals/mo via cook-up (avg $10/meal)</div>
+          <div class="comparison-label">40 meals/mo — cook-up (avg $10)</div>
           <div class="comparison-bar-wrap">
-            <div class="comparison-bar"><div class="comparison-fill fill-gold" style="width:67%"></div></div>
+            <div class="comparison-bar"><div class="comparison-fill fill-gold" style="width:50%"></div></div>
             <span class="comparison-val gold">$400</span>
           </div>
         </div>
         <div style="margin-top:30px;padding-top:22px;border-top:1px solid rgba(201,168,76,0.15);">
-          <div class="comparison-label" style="margin-bottom:10px;">Estimated monthly savings</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--gold-light);font-weight:300;">$200+</div>
-          <p style="font-size:0.82rem;color:var(--mist-dark);margin-top:8px;line-height:1.65;">Based on a minimum of 10 meals per session, once a week, at $10/meal versus $15/meal for equivalent takeout or delivery.</p>
+          <div class="comparison-label" style="margin-bottom:10px;">Monthly savings vs. restaurant/delivery</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--gold-light);font-weight:300;">$400+</div>
+          <p style="font-size:0.82rem;color:var(--mist-dark);margin-top:8px;line-height:1.65;">Restaurant meals and delivery orders with tip and fees average $20 or more. Fast casual runs $15. The cook-up lands at $10. Same forty meals, a fraction of the cost.</p>
         </div>
       </div>
     </div>
@@ -1274,9 +1314,7 @@
 <div class="ornament-divider">
   <div class="ornament-line reveal"></div>
   <div class="ornament-center">
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;"><use href="#oak-leaf"/></svg>
-    <span style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);opacity:0.5;margin:0 10px;">✦</span>
-    <svg width="14" height="14" viewBox="0 0 20 22" style="opacity:0.6;transform:scaleX(-1)"><use href="#oak-leaf"/></svg>
+    <svg class="ornament-acorn reveal" viewBox="0 0 40 52"><use href="#acorn"/></svg>
   </div>
   <div class="ornament-line reveal"></div>
 </div>
@@ -1316,7 +1354,7 @@
 
     <!-- WAX SEAL -->
     <div class="reveal" style="text-align:center;">
-      <div class="wax-seal">
+      <div class="wax-seal reveal">
         <svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
           <circle cx="45" cy="45" r="42" fill="#6b2030" stroke="#8b3040" stroke-width="1.5"/>
           <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="0.8"/>
@@ -1372,16 +1410,16 @@
 </footer>
 
 <script>
-  // Scroll reveal — also triggers ornament lines and section label lines
+  // Scroll reveal — triggers ornament lines, section labels, wax seal, acorns
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+  }, { threshold: 0.15, rootMargin: '0px 0px -32px 0px' });
 
-  document.querySelectorAll('.reveal, .ornament-line').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal, .ornament-line, .ornament-acorn, .wax-seal').forEach(el => observer.observe(el));
 
   // Staggered letter animation for h1
   document.addEventListener('DOMContentLoaded', () => {
