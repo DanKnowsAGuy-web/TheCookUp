@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cook-Up — The Gathering Oak</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Cinzel:wght@400;500;600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #161f18;
+    --forest-mid: #1e2e21;
+    --forest-light: #2a3f2e;
+    --forest-warm: #243028;
+    --gold: #c9a84c;
+    --gold-light: #dfc070;
+    --gold-pale: #f0dfa0;
+    --gold-dim: rgba(201,168,76,0.15);
+    --cream: #f5eed8;
+    --cream-mid: #e8dfc0;
+    --cream-dark: #d4c898;
+    --mist: #8aa090;
+    --mist-dark: #5a7060;
+    --wine: #6b2030;
+    --wine-light: #8b3040;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--forest);
+    color: var(--cream);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* TYPOGRAPHY */
+  .display {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+  }
+  .cinzel {
+    font-family: 'Cinzel', serif;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes lineGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .animate-1 { animation: fadeUp 0.9s ease forwards; opacity: 0; }
+  .animate-2 { animation: fadeUp 0.9s 0.2s ease forwards; opacity: 0; }
+  .animate-3 { animation: fadeUp 0.9s 0.4s ease forwards; opacity: 0; }
+  .animate-4 { animation: fadeUp 0.9s 0.6s ease forwards; opacity: 0; }
+  .animate-5 { animation: fadeUp 0.9s 0.8s ease forwards; opacity: 0; }
+  .animate-6 { animation: fadeUp 0.9s 1.0s ease forwards; opacity: 0; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(22,31,24,0.95) 0%, transparent 100%);
+  }
+  .nav-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-cta {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--forest);
+    background: var(--gold);
+    padding: 10px 22px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid var(--gold);
+  }
+  .nav-cta:hover {
+    background: transparent;
+    color: var(--gold);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(107,32,48,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 20%, rgba(42,63,46,0.4) 0%, transparent 60%);
+  }
+
+  .hero-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .hero-ornament::before, .hero-ornament::after {
+    content: '';
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--cream);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--gold-pale);
+  }
+
+  .hero-tagline {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 24px 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-tagline span { opacity: 0.4; }
+
+  .hero-subhead {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream-mid);
+    max-width: 680px;
+    line-height: 1.6;
+    margin-bottom: 56px;
+  }
+
+  .hero-valueprop {
+    font-family: 'Raleway', sans-serif;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    font-weight: 300;
+    color: var(--mist);
+    max-width: 580px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--forest);
+    background: var(--gold);
+    padding: 18px 40px;
+    text-decoration: none;
+    border: 1px solid var(--gold);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .btn-primary:hover::before { transform: translateX(100%); }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    border-color: var(--gold-light);
+  }
+
+  .btn-ghost {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cream-mid);
+    background: transparent;
+    padding: 18px 40px;
+    text-decoration: none;
+    border: 1px solid rgba(201,168,76,0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: float 3s ease-in-out infinite;
+  }
+  .hero-scroll span {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist-dark);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* SECTION COMMON */
+  section { position: relative; }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 24px;
+  }
+  h2 em {
+    font-style: italic;
+    color: var(--gold-pale);
+  }
+
+  h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--cream-mid);
+    font-weight: 300;
+  }
+
+  .lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--cream-mid);
+  }
+
+  /* DIVIDER */
+  .ornament-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 80px 0;
+  }
+  .ornament-divider::before, .ornament-divider::after {
+    content: '';
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.4));
+  }
+  .ornament-divider::after {
+    background: linear-gradient(to left, transparent, rgba(201,168,76,0.4));
+  }
+  .ornament-center {
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    font-family: 'Cinzel', serif;
+    opacity: 0.6;
+  }
+
+  /* PROBLEM SECTION */
+  .problem-section {
+    padding: 100px 0;
+    background: linear-gradient(to bottom, var(--forest) 0%, var(--forest-warm) 100%);
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .problem-text p { margin-bottom: 20px; }
+
+  .problem-callout {
+    background: rgba(107,32,48,0.12);
+    border: 1px solid rgba(107,32,48,0.3);
+    border-left: 3px solid var(--wine-light);
+    padding: 28px 32px;
+    margin-top: 32px;
+  }
+  .problem-callout p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--cream-mid);
+    line-height: 1.6;
+  }
+
+  .problem-visual {
+    position: relative;
+  }
+  .problem-card {
+    background: var(--forest-light);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 40px;
+    position: relative;
+  }
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 40px;
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+  }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--mist);
+    font-weight: 400;
+  }
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+  .stat-value.red { color: #c07070; }
+
+  /* SCENE SECTION */
+  .scene-section {
+    padding: 100px 0;
+    background: var(--forest-warm);
+  }
+
+  .scene-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .scene-aside {
+    position: sticky;
+    top: 120px;
+  }
+
+  .scene-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 6rem;
+    font-weight: 300;
+    color: rgba(201,168,76,0.1);
+    line-height: 1;
+    margin-bottom: -20px;
+  }
+
+  .scene-blocks { display: flex; flex-direction: column; gap: 48px; }
+
+  .scene-block {
+    padding-left: 32px;
+    border-left: 1px solid rgba(201,168,76,0.2);
+    transition: border-color 0.3s;
+  }
+  .scene-block:hover { border-left-color: var(--gold); }
+
+  .scene-block-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  /* CURRICULUM SECTION */
+  .curriculum-section {
+    padding: 100px 0;
+    background: linear-gradient(to bottom, var(--forest-warm) 0%, var(--forest) 100%);
+  }
+
+  .curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+    background: rgba(201,168,76,0.08);
+  }
+
+  .week-card {
+    background: var(--forest-mid);
+    padding: 36px 32px;
+    position: relative;
+    transition: background 0.3s ease;
+    cursor: default;
+  }
+  .week-card:hover {
+    background: var(--forest-light);
+  }
+  .week-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 32px; right: 32px;
+    height: 1px;
+    background: rgba(201,168,76,0.1);
+  }
+
+  .week-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
+  .week-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .week-desc {
+    font-size: 0.82rem;
+    color: var(--mist);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .curriculum-note {
+    margin-top: 48px;
+    padding: 32px 40px;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.15);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .curriculum-note-icon {
+    font-size: 2rem;
+    opacity: 0.7;
+  }
+  .curriculum-note p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--cream-mid);
+  }
+
+  /* PAYOFF SECTION */
+  .payoff-section {
+    padding: 100px 0;
+    background: var(--forest);
+  }
+
+  .payoff-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .payoff-list {
+    list-style: none;
+    margin-top: 40px;
+  }
+  .payoff-list li {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    align-items: start;
+  }
+  .payoff-list li:last-child { border-bottom: none; }
+  .payoff-check {
+    color: var(--gold);
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  .payoff-text strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--cream);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .payoff-text span {
+    font-size: 0.85rem;
+    color: var(--mist);
+    line-height: 1.6;
+  }
+
+  .payoff-aside {
+    background: var(--forest-light);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 48px 40px;
+    position: relative;
+  }
+  .payoff-aside::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+  .payoff-aside-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+  .comparison-row {
+    margin-bottom: 24px;
+  }
+  .comparison-label {
+    font-size: 0.75rem;
+    color: var(--mist);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .comparison-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .comparison-bar {
+    height: 6px;
+    border-radius: 3px;
+    flex: 1;
+    background: rgba(201,168,76,0.1);
+    overflow: hidden;
+  }
+  .comparison-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+  .fill-red { background: linear-gradient(to right, #8b3030, #c05050); }
+  .fill-gold { background: linear-gradient(to right, var(--gold), var(--gold-light)); }
+  .comparison-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    min-width: 60px;
+    text-align: right;
+  }
+  .comparison-val.red { color: #c07070; }
+  .comparison-val.gold { color: var(--gold-light); }
+
+  /* FOR YOU SECTION */
+  .foryou-section {
+    padding: 100px 0;
+    background: var(--forest-warm);
+    position: relative;
+    overflow: hidden;
+  }
+  .foryou-section::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .foryou-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .foryou-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--cream);
+    position: relative;
+    padding-left: 32px;
+  }
+  .foryou-quote::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 2px;
+    background: var(--gold);
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 120px 0;
+    background: linear-gradient(to bottom, var(--forest-warm) 0%, var(--forest) 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: rgba(201,168,76,0.1);
+    line-height: 1;
+    margin-bottom: -20px;
+    font-style: italic;
+  }
+
+  .cta-details {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin: 48px 0;
+    flex-wrap: wrap;
+  }
+  .cta-detail {
+    text-align: center;
+  }
+  .cta-detail-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mist-dark);
+    margin-bottom: 8px;
+  }
+  .cta-detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  .cta-note {
+    font-size: 0.82rem;
+    color: var(--mist-dark);
+    margin-top: 24px;
+    letter-spacing: 0.03em;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 48px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+  }
+  .footer-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .footer-address {
+    font-size: 0.75rem;
+    color: var(--mist-dark);
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    nav { padding: 16px 24px; }
+    .section-inner { padding: 0 24px; }
+    .problem-grid, .scene-layout, .payoff-grid, .foryou-layout { grid-template-columns: 1fr; gap: 48px; }
+    .curriculum-grid { grid-template-columns: 1fr 1fr; }
+    .scene-aside { position: static; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-address { text-align: center; }
+  }
+  @media (max-width: 560px) {
+    .curriculum-grid { grid-template-columns: 1fr; }
+    .cta-details { gap: 32px; }
+  }
+
+  /* SCROLL REVEAL (lightweight JS-driven) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">The Gathering Oak</a>
+  <a href="#reserve" class="nav-cta">Reserve Your Spot</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-ornament animate-1">The Gathering Oak Presents</div>
+
+  <div class="hero-eyebrow animate-2">Spartanburg, South Carolina</div>
+
+  <h1 class="animate-3">The <em>Cook-Up</em></h1>
+
+  <div class="hero-tagline animate-4">
+    <span>✦</span> Six Weeks <span>·</span> Real Food <span>·</span> Good Company <span>✦</span>
+  </div>
+
+  <p class="hero-subhead animate-5">
+    Your whole week of meals. Made with friends. No dishes.
+  </p>
+
+  <p class="hero-valueprop animate-6">
+    We turn meal prep into a social event so you can fill your fridge with real food without cooking every night, blowing your budget on takeout, or doing a single dish.
+  </p>
+
+  <div class="hero-cta-group animate-6" style="animation-delay:1.1s;">
+    <a href="#reserve" class="btn-primary">Join the Next Cohort</a>
+    <a href="#how-it-works" class="btn-ghost">See How It Works</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- PROBLEM SECTION -->
+<section class="problem-section">
+  <div class="section-inner">
+    <div class="problem-grid">
+      <div class="problem-text">
+        <div class="section-label reveal">The Problem</div>
+        <h2 class="reveal reveal-delay-1">You know how <em>this goes.</em></h2>
+        <p class="reveal reveal-delay-2">It is Tuesday night. You are tired. There is nothing ready. Somehow you end up spending $18 on something that does not even taste that good.</p>
+        <p class="reveal reveal-delay-3" style="margin-top:16px;">You tell yourself the weekend will be different. You will cook. You will meal prep. But Sunday comes and the last thing you want is three hours alone in a kitchen with a pile of dishes waiting for you at the end.</p>
+        <div class="problem-callout reveal reveal-delay-4">
+          <p>There is a better way. And it involves wine.</p>
+        </div>
+      </div>
+
+      <div class="problem-visual reveal reveal-delay-2">
+        <div class="problem-card">
+          <div class="stat-row">
+            <span class="stat-label">40 meals/mo via takeout (avg $15)</span>
+            <span class="stat-value red">$600/mo</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Average weeknight cooking time</span>
+            <span class="stat-value red">45–60 min</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Dishes after cooking alone</span>
+            <span class="stat-value red">Always</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">40 meals/mo via cook-up (avg $10)</span>
+            <span class="stat-value">$400/mo</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Dishes after the cook-up</span>
+            <span class="stat-value">Zero</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">How you feel walking out</span>
+            <span class="stat-value" style="color:var(--gold-light);">Ready</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament-divider">
+  <div class="ornament-center">✦ ✦ ✦</div>
+</div>
+
+<!-- SCENE SECTION -->
+<section class="scene-section" id="how-it-works">
+  <div class="section-inner">
+    <div class="scene-layout">
+      <div class="scene-aside">
+        <div class="section-label reveal">The Experience</div>
+        <h2 class="reveal reveal-delay-1">What actually <em>happens</em></h2>
+        <p class="lead reveal reveal-delay-2" style="margin-top:24px;">A real kitchen. Real food. People you are starting to know.</p>
+      </div>
+
+      <div class="scene-blocks">
+        <div class="scene-block reveal">
+          <div class="scene-block-label">When you arrive</div>
+          <h3>Music is going. There is a glass of wine waiting.</h3>
+          <p>You walk into The Gathering Oak and it does not feel like a chore. The kitchen is alive. People are already moving. Nobody is stressed. Nobody is doing this alone.</p>
+        </div>
+
+        <div class="scene-block reveal reveal-delay-1">
+          <div class="scene-block-label">How the prep works</div>
+          <h3>Everyone has a station. Everything flows.</h3>
+          <p>Together you move through a coordinated prep line. One person handles the proteins. Someone else is working the vegetables. The sauces are already prepped. Within a few hours, everyone in the room has produced more food than any one of them could have made at home, in a fraction of the time.</p>
+        </div>
+
+        <div class="scene-block reveal reveal-delay-2">
+          <div class="scene-block-label">Before you come</div>
+          <h3>A short video. So you walk in ready.</h3>
+          <p>Each week you receive a brief technique video for your station before you arrive. No lectures when you get there. Just practice, in real time, with someone beside you to help you get it right.</p>
+        </div>
+
+        <div class="scene-block reveal reveal-delay-3">
+          <div class="scene-block-label">When you leave</div>
+          <h3>Go containers. Full fridge. Not a dish in sight.</h3>
+          <p>You pack your meals into clean go containers and walk out the door with a full week of real food. No cleanup waiting for you at home. Just a fridge that looks the way you always wished it did on a Sunday night.</p>
+        </div>
+
+        <div class="scene-block reveal reveal-delay-4">
+          <div class="scene-block-label">After the prep</div>
+          <h3>Linger as long as you like.</h3>
+          <p>When the cooking is done, The Gathering Oak opens up. Some people head straight home, food in hand, week handled. Others pull up a chair, pour another glass, and stay a while. The space is warm, the conversation is easy, and there is no rush. Week by week you start to know these people. That turns out to be its own reward.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament-divider">
+  <div class="ornament-center">✦ ✦ ✦</div>
+</div>
+
+<!-- CURRICULUM SECTION -->
+<section class="curriculum-section">
+  <div class="section-inner">
+    <div class="section-label reveal">The Six-Week Arc</div>
+    <h2 class="reveal reveal-delay-1">A real curriculum.<br><em>Real skills.</em></h2>
+    <p class="lead reveal reveal-delay-2" style="max-width:600px; margin-top:16px;">This is not a drop-in. It is a cohort. Six weeks, once a week, rotating through every station in the kitchen. By the end you have done it all.</p>
+
+    <div class="curriculum-grid">
+      <div class="week-card reveal">
+        <div class="week-num">Week One</div>
+        <div class="week-title">The Foundation</div>
+        <div class="week-desc">Knife skills, mise en place, and how the prep line works. You learn the system from the inside out.</div>
+      </div>
+      <div class="week-card reveal reveal-delay-1">
+        <div class="week-num">Week Two</div>
+        <div class="week-title">Proteins</div>
+        <div class="week-desc">Chicken, beef, pork. How to season, sear, braise, and batch cook the proteins that anchor a whole week of meals.</div>
+      </div>
+      <div class="week-card reveal reveal-delay-2">
+        <div class="week-num">Week Three</div>
+        <div class="week-title">Vegetables and Sides</div>
+        <div class="week-desc">Roasting, sautéing, building flavor without complexity. How to make vegetables people actually want to eat.</div>
+      </div>
+      <div class="week-card reveal reveal-delay-3">
+        <div class="week-num">Week Four</div>
+        <div class="week-title">Sauces and Flavor</div>
+        <div class="week-desc">The difference between food that tastes flat and food that tastes intentional. Batch sauces that transform everything they touch.</div>
+      </div>
+      <div class="week-card reveal reveal-delay-4">
+        <div class="week-num">Week Five</div>
+        <div class="week-title">International Profiles</div>
+        <div class="week-desc">Mexican, Mediterranean, Asian. The same proteins, the same bases, completely different meals. Your repertoire expands.</div>
+      </div>
+      <div class="week-card reveal reveal-delay-4">
+        <div class="week-num">Week Six</div>
+        <div class="week-title">Full Menu Integration</div>
+        <div class="week-desc">You run the line. Every station, full menu, the whole cohort working together. Your first week you were learning. This week you know.</div>
+      </div>
+    </div>
+
+    <div class="curriculum-note reveal">
+      <div class="curriculum-note-icon">📽</div>
+      <p>Each week a short technique video arrives before your session so you walk in prepared, not watching someone demonstrate for twenty minutes while the food waits.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ornament-divider">
+  <div class="ornament-center">✦ ✦ ✦</div>
+</div>
+
+<!-- PAYOFF SECTION -->
+<section class="payoff-section">
+  <div class="section-inner">
+    <div class="payoff-grid">
+      <div>
+        <div class="section-label reveal">What You Take Home</div>
+        <h2 class="reveal reveal-delay-1">A full fridge.<br><em>A lighter wallet.</em><br>A better week.</h2>
+        <p class="reveal reveal-delay-2" style="margin-top:24px;">Here is what goes home with you. Real meals. Not snacks, not sad salads, not something you will heat up once and forget about. Actual food you made with your own hands, portioned and ready for the whole week.</p>
+
+        <ul class="payoff-list">
+          <li class="reveal reveal-delay-2">
+            <span class="payoff-check">✦</span>
+            <div class="payoff-text">
+              <strong>Real food. All week.</strong>
+              <span>Go containers, labeled and stacked. You know what is in them because you made them.</span>
+            </div>
+          </li>
+          <li class="reveal reveal-delay-3">
+            <span class="payoff-check">✦</span>
+            <div class="payoff-text">
+              <strong>Skills that compound.</strong>
+              <span>You pick up technique without realizing it. Every session you are a little more capable than the last.</span>
+            </div>
+          </li>
+          <li class="reveal reveal-delay-3">
+            <span class="payoff-check">✦</span>
+            <div class="payoff-text">
+              <strong>Money back in your pocket.</strong>
+              <span>Forty meals a month via takeout runs around $600 at $15 a meal. The cook-up brings that same forty meals down to $400. The food is better. The math is simple.</span>
+            </div>
+          </li>
+          <li class="reveal reveal-delay-4">
+            <span class="payoff-check">✦</span>
+            <div class="payoff-text">
+              <strong>Not a single dish.</strong>
+              <span>Everything goes into go containers. You walk out clean.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="payoff-aside reveal reveal-delay-3">
+        <div class="payoff-aside-title">The Math</div>
+        <div class="comparison-row">
+          <div class="comparison-label">40 meals/mo via takeout (avg $15/meal)</div>
+          <div class="comparison-bar-wrap">
+            <div class="comparison-bar"><div class="comparison-fill fill-red" style="width:100%"></div></div>
+            <span class="comparison-val red">$600</span>
+          </div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-label">40 meals/mo via cook-up (avg $10/meal)</div>
+          <div class="comparison-bar-wrap">
+            <div class="comparison-bar"><div class="comparison-fill fill-gold" style="width:67%"></div></div>
+            <span class="comparison-val gold">$400</span>
+          </div>
+        </div>
+        <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(201,168,76,0.15);">
+          <div class="comparison-label" style="margin-bottom:12px;">Estimated monthly savings</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--gold-light); font-weight:300;">$200+</div>
+          <p style="font-size:0.78rem; color:var(--mist-dark); margin-top:8px; line-height:1.6;">Based on a minimum of 10 meals per session, once a week, at $10/meal versus $15/meal for equivalent takeout or delivery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament-divider">
+  <div class="ornament-center">✦ ✦ ✦</div>
+</div>
+
+<!-- FOR YOU SECTION -->
+<section class="foryou-section">
+  <div class="section-inner">
+    <div class="foryou-layout">
+      <div>
+        <div class="section-label reveal">Who This Is For</div>
+        <h2 class="reveal reveal-delay-1">You are busy.<br>You care about <em>what you eat.</em><br>Those two things keep working against each other.</h2>
+      </div>
+      <div>
+        <p class="reveal reveal-delay-2" style="margin-bottom:24px;">You are not looking for a cooking class with a chef talking at you. You are not interested in another meal kit showing up at your door with seventeen ingredients and a laminated card.</p>
+        <p class="reveal reveal-delay-3" style="margin-bottom:24px;">You just want real food in your fridge without the Sunday dread, the weeknight scramble, or the stack of pans waiting for you in the sink.</p>
+        <p class="reveal reveal-delay-3" style="margin-bottom:40px;">You might be feeding just yourself. You might be feeding a family. It does not matter. What matters is that you are tired of the same cycle and ready for something that actually works.</p>
+        <div class="foryou-quote reveal reveal-delay-4">
+          The Cook-Up is not a class. It is not a service. It is a community of people who figured out that doing this together is just better than doing it alone.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section" id="reserve">
+  <div class="section-inner">
+    <div class="cta-ornament reveal">✦</div>
+    <div class="section-label reveal reveal-delay-1" style="justify-content:center;">Reserve Your Spot</div>
+    <h2 class="reveal reveal-delay-2" style="text-align:center;">Join the next<br><em>Cook-Up cohort.</em></h2>
+    <p class="lead reveal reveal-delay-3" style="text-align:center; max-width:560px; margin:24px auto 0;">Six weeks. Once a week. Space limited to 18 people. That is by design — small enough that everyone is actually cooking, large enough that the energy in the room feels like something.</p>
+
+    <div class="cta-details reveal reveal-delay-3">
+      <div class="cta-detail">
+        <div class="cta-detail-label">Commitment</div>
+        <div class="cta-detail-value">Six Weeks</div>
+      </div>
+      <div class="cta-detail">
+        <div class="cta-detail-label">Frequency</div>
+        <div class="cta-detail-value">Once a Week</div>
+      </div>
+      <div class="cta-detail">
+        <div class="cta-detail-label">Group Size</div>
+        <div class="cta-detail-value">Max 18 People</div>
+      </div>
+      <div class="cta-detail">
+        <div class="cta-detail-label">Location</div>
+        <div class="cta-detail-value">Spartanburg, SC</div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-4" style="text-align:center;">
+      <a href="mailto:hello@thegatheringoak.com" class="btn-primary" style="display:inline-block;">Reserve My Spot</a>
+      <p class="cta-note" style="margin-top:16px;">Meals priced per serving with volume discounts for larger orders.<br>Bring your appetite, your curiosity, and someone you want to cook with. We will handle everything else.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">The Gathering Oak — Spartanburg, SC</div>
+  <div class="footer-address">
+    Questions? Reach out at hello@thegatheringoak.com<br>
+    <span style="color:rgba(143,160,144,0.5); font-size:0.7rem;">© The Gathering Oak. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
